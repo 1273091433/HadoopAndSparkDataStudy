@@ -590,3 +590,69 @@ tar -x hadoop-native-64-2.4.0.tar -C  hadoop/lib/native/
 export JAVA_LIBRARY_PATH=/usr/local/hadoop/lib/native
 
 ```
+
+**时钟不正确的问题**
+
+```
+fatal org.apache.hadoop.hbase.regionserver.hregionserver: master rejected startup because clock is out of sync
+org.apache.hadoop.hbase.clockoutofsyncexception: org.apache.hadoop.hbase.clockoutofsyncexception: server suc-pc,60020,1363269953286 has been rejected; reported time is too far out of sync with master.  time difference of 39375ms > max allowed of 30000ms
+　　小问题，一看就知道错误发生在哪。在hbase中，允许小的时间偏差，但是上面39秒的时间偏差就有点大了。如果你是联网的话，可以用ntpdate 219.158.14.130进行同步。219.158.14.130是网通北京的时间服务器，如果不行你可以用别的服务器进行同步。
+```
+这里面有一段小插曲就是,我在使用的时候,由于使用了外网的时钟服务器,但是resolv.conf反复被覆盖.所以不成功.
+
+```
+/etc/resolv.conf中设置dns之后每次重启Ubuntu Server时该文件会被覆盖，针对这种情况找了一些个解决方法
+
+防止/etc/resolv.conf被覆盖的方法
+
+方法一
+
+1.需要创建一个文件/etc/resolvconf/resolv.conf.d/tail
+
+sudo vi /etc/resolvconf/resolv.conf.d/tail
+
+2.在该文件中写入自己需要的dns服务器，格式与/etc/resolv.conf相同
+
+nameserver 8.8.8.8  
+
+3.重启下resolvconf程序
+
+sudo /etc/init.d/resolvconf restart 
+
+再去看看/etc/resolv.conf文件,可以看到自己添加的dns服务器已经加到该文件中
+
+方法二
+
+在/etc/network/interfaces中
+
+###interfaces中#######     
+auto eth0     
+iface eth0 inet static     
+address 192.168.3.250     
+netmask 255.255.255.0                  #子网掩码     
+gateway 192.168.3.1                      #网关     
+dns-nameservers 8.8.8.8 8.8.4.4    #设置dns服务器  
+```
+
+
+
+**zookeeper服务器未设置或者/etc/hosts设置有误（hbase)**
+
+```
+2013-03-11 19:41:08,263 info org.apache.zookeeper.clientcnxn: opening socket connection to server localhost/127.0.0.1:2181. will not attempt to authenticate using sasl (unknown error)
+2013-03-11 19:41:08,266 warn org.apache.zookeeper.clientcnxn: session 0x0 for server null, unexpected error, closing socket connection and attempting reconnect
+java.net.connectexception: 拒绝连接
+        at sun.nio.ch.socketchannelimpl.checkconnect(native method)
+        at sun.nio.ch.socketchannelimpl.finishconnect(socketchannelimpl.java:692)
+        at org.apache.zookeeper.clientcnxnsocketnio.dotransport(clientcnxnsocketnio.java:350)
+        at org.apache.zookeeper.clientcnxn$sendthread.run(clientcnxn.java:1068)
+　　这个问题的出现，会伴随一个非常奇怪的现象。在master所在的pc上启动start-all时，内容提示所有的regionserver已经全部启动。但是，如果你去查看masterip：60010时会发现其他的regionserver并没有启动，regionserver的数量只有一台。因为已经有一台regionserver是活着的，所以hbase还是能继续使用的，这
+此文来自: 马开东博客 转载请注明出处 网址： http://www.makaidong.com
+会迷惑你。查看别的机器的日志后，你就会发现上述错误。zookeeper的定位居然定位到127.0.0.1去了，这个不科学。最后，查阅资料才发现hbase.zookeeper.quorum这个属性设置时，默认本机即为zookeeper服务器（单机使用）。这就很简单了，只需要增加这个属性就可以了。
+        <property>
+                <name>hbase.zookeeper.quorum</name>
+                <value>10.82.58.213</value>
+        </property>
+　　同时，也发现如果/etc/hosts设置错误也会发生类似问题。/etc/hosts中，localhost和本机pc名都需要为127.0.0.1，因为本机pc名默认是127.0.1.1。
+　　参考：http://mail-archives.apache.org/mod_mbox/hbase-user/201106.mbox/%3cbanlktimcghr-1mdtdo3netzmrqxkbjy=da@mail.gmail.com%3e
+```

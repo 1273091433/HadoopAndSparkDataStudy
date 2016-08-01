@@ -1,8 +1,13 @@
-# 一.HBASE的伪分布安装与分布式安装
+# HBASE的伪分布安装与分布式安装
 
-##伪分布式安装
+##一 伪分布式安装
+
 ### 1.下载解压给权限
+
 可以从官方下载地址下载 HBase 最新版本，推荐 stable目录下的二进制版本。我下载的是 hbase-1.1.3-bin.tar.gz 。确保你下载的版本与你现存的 Hadoop 版本兼容（兼容列表）以及支持的JDK版本（从HBase 1.0.x 已经不支持 JDK 6 了）。
+
+[兼容列表:](http://hbase.apache.org/book.html#getting_started)
+
 
 ```
 tar -zxvf hbase-1.1.3-bin.tar.gz
@@ -12,16 +17,15 @@ sudo chmod -R 775 hbase
 sudo chown -R hadoop:hadoop: hbase
 ```
 
-### 2.修改环境变量
+### 2.修改HBASE的JDK环境变量
 
-修改$JAVA_HOME为jdk安装目录
 ```
 sudo nano /usr/local/hbase/conf/hbase-env.sh 
-
 export JAVA_HOME=/usr/lib/jvm/
 ```
 
-修改hbase-site.xml 
+### 3. 修改hbase-site.xml 
+
 ```
 hadoop@Master:/usr/local/hbase/conf$ sudo nano hbase-site.xml 
 
@@ -38,7 +42,7 @@ hadoop@Master:/usr/local/hbase/conf$ sudo nano hbase-site.xml
 
 ```
 
-### 3.启动验证
+### 4.启动验证
 * 启动hbase 
 
 ```
@@ -66,35 +70,20 @@ hadoop@Master:/usr/local/hbase/bin$ jps
 2190 HQuorumPeer
 hadoop@Master:/usr/local/hbase/bin$ 
 
-
 ```
-![](hbase0001.png)
+![](../../images/11/hbase0001.png)
 
-####4.尝试一下Thrift通信服务
+###5.尝试一下Thrift通信服务
 这里我们尝试使用HBase 的 Thrift API，用Python和HBase进行简单交互。首先启动HBase的Thrift服务：
+
 ```
 hadoop@Master:/usr/local/hbase/bin$ ./hbase-daemon.sh start thrift
 starting thrift, logging to /usr/local/hbase/bin/../logs/hbase-hadoop-thrift-Master.out
 
-```
 然后安装Python的happybase模块，HBase是对 HBase的Thrift接口的一个简单包装：
-```
+
 chuguaningdeMBP:~ chuguangming$ sudo pip install happybase
 
-Password:
-The directory '/Users/chuguangming/Library/Caches/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
-The directory '/Users/chuguangming/Library/Caches/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
-Collecting happybase
-  Downloading happybase-0.9.tar.gz (62kB)
-    100% |████████████████████████████████| 65kB 18kB/s 
-Collecting thrift>=0.8.0 (from happybase)
-  Downloading thrift-0.9.3.tar.gz
-Installing collected packages: thrift, happybase
-  Running setup.py install for thrift ... done
-  Running setup.py install for happybase ... done
-Successfully installed happybase-0.9 thrift-0.9.3
-
-```
 然后启动ipython，如果没有ipython，请通过pip安装:
 
 Python 2.7.6 (default, Mar 22 2014, 22:59:56)
@@ -124,8 +113,9 @@ In [7]:
 
 ```
 
-```
-##分布式安装
+
+##二 分布式安装
+
 ###1 软件环境
 OS:Linux Master 3.19.0-25-generic #26~14.04.1-Ubuntu SMP Fri Jul 24 21:16:20 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux
 
@@ -140,6 +130,7 @@ Hbase:hbase-1.1.3
 
 ### 2 集群部署机器:
 
+
 | IP | HostName | Master | RegionServer |
 | -- | -- | -- | -- |
 | 192.168.1.80 | Master | yes | no |
@@ -150,24 +141,28 @@ Hbase:hbase-1.1.3
 假设你已经安装部署好了 Hadoop 集群和 Java，可以参考以前的部署 文章。
 
 ### 4 Master的安装:
+
 ** 1基本安装**
+
 ```
 tar -zxvf hbase-1.0.0-bin.tar.gz
-sudo mv hbase-1.0.0 /opt/hbase
-cd /opt
+sudo mv hbase-1.0.0 /usr/local/hbase
+cd /usr/local/
 sudo chmod -R 775 hbase
 sudo chown -R hadoop:hadoop: hbase
 ```
-**2修改$JAVA_HOME为jdk安装目录**
-```
-sudo vim /opt/hbase/conf/hbase-env.sh 
 
+**2修改$JAVA_HOME为jdk安装目录**
+
+```
+usr/local/hbase/conf$ sudo nano hbase-env.sh 
 export JAVA_HOME=/usr/lib/jvm/
 ```
 
 **3修改hbase-site.xml** 
+
 ```
-hadoop@Master:/usr/local/hbase/conf$ sudo nano hbase-site.xml 
+/usr/local/hbase/conf/hbase-site.xml 
 
 <configuration>
   <property>
@@ -188,17 +183,17 @@ hadoop@Master:/usr/local/hbase/conf$ sudo nano hbase-site.xml
   </property>
 </configuration>
 
-
 ```
 其中第一个属性指定本机的hbase的存储目录，必须与Hadoop集群的core-site.xml文件配置保持一致；第二个属性指定hbase的运行模式，true代表全分布模式；第三个属性指定 Zookeeper 管理的机器，一般为奇数个；第四个属性是数据存放的路径。这里我使用的默认的 HBase 自带的 Zookeeper。
 
 **4配置regionservers**
+
 ```
 Slave1
 Slave2
-
 ```
 regionservers文件列出了所有运行hbase的机器（即HRegionServer)。此文件的配置和Hadoop中的slaves文件十分相似，每行指定一台机器的主机名。当HBase启动的时候，会将此文件中列出的所有机器启动。关闭时亦如此。
+
 
 **5修改 ulimit 限制**
 
@@ -223,6 +218,25 @@ session required pam_limits.so
 ###5 Slave上面的操作
 基本上把以上步骤重复一下就可以了.
 
+在 Master 节点上执行：  
+
+```
+cd /usr/local
+hadoop@hadoopmaster:/usr/local$ sudo tar cvfz ~/hbase.tar.gz ./hbase
+scp ~/hbase.tar.gz hadoop@hadoopslave1:/home/hadoop/
+scp ~/hbase.tar.gz  hadoop@hadoopslave2:/home/hadoop/
+```
+
+在Slave节点上执行:
+
+```
+hadoop@hadoopslave1:/usr/local$ sudo tar xvfz ~/hbase.tar.gz -C /usr/local/
+hadoop@hadoopslave1:/usr/local$ sudo chown -R hadoop:hadoop /usr/local/hbase/
+hadoop@hadoopslave1:/usr/local$ sudo chmod -R 775 /usr/local/hbase/
+
+```
+
+
 ###6 运行 HBase
 在master上运行
 
@@ -237,5 +251,5 @@ start-hbase.sh
 在 master 运行 jps 应该会有HMaster进程。在各个 slave 上运行jps 应该会有HQuorumPeer,HRegionServer两个进程。
 在浏览器中输入 http://Master:16010 可以看到 HBase Web UI 。
 
-![](chapter11hbaseok.png)
+![](../../images/11/chapter11hbaseok.png)
 
