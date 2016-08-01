@@ -30,11 +30,6 @@ v 0.1
 <hr>
 
 ### 赞助我们
-
-* 微信扫码赞助原创
- 
- 
- <img src="pay.jpg" width="168px"/>
  
  <span id="more"></span>
 ### 更多原创开源书籍
