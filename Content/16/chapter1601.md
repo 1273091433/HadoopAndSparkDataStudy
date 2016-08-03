@@ -76,7 +76,7 @@ service network restart
 
 ####一、进入/mnt/disk1目录
 
-![](images/16/1.png)
+![](../../images/16/1.png)
   
 ####二、使用root用户解压其中的transwarp安装包并安装
 
@@ -86,19 +86,19 @@ service network restart
  >./install
  
  ```
-![](images/16/2.png)
+![](../../images/16/2.png)
  
 ####三、安装完成后.
 
 会自动弹出界面，依次选择Accept→选择网卡→默认端口8180→删除已有yum资源库→create new repository→Use ISO File→选择/mnt/disk1中的CentOS6.5安装包
  
- ![](images/16/3.png)
- ![](images/16/4.png)
- ![](images/16/5.png)
- ![](images/16/6.png)
- ![](images/16/7.png)
- ![](images/16/8.png)
- ![](images/16/9.png)
+ ![](../../images/16/3.png)
+ ![](../../images/16/4.png)
+ ![](../../images/16/5.png)
+ ![](../../images/16/6.png)
+ ![](../../images/16/7.png)
+ ![](../../images/16/8.png)
+ ![](../../images/16/9.png)
  
  
 ####四、安装之后的设置

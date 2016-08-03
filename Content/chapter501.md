@@ -44,13 +44,17 @@ manifest.json
 ##三 准备工作：系统环境搭建  
 以下操作均用root用户操作。  
 ###1. 网络配置(所有节点)  
-`vi /etc/sysconfig/network` 修改hostname：  
+`vi /etc/sysconfig/network` 
+修改hostname：  
+
 ```
 NETWORKING=yes
 HOSTNAME=dhc-4
 ```
+
 通过 `service network restart` 重启网络服务生效。  
 `vi /etc/hosts` ,修改ip与主机名的对应关系
+
 ```
 192.168.1.213   dhc-4
 192.168.1.214   dhc-5
@@ -63,6 +67,7 @@ HOSTNAME=dhc-4
 
 将主节点公钥添加到认证文件中： `cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys` ，并设置authorized_keys的访问权限： `chmod 600 ~/.ssh/authorized_keys `。  
 分别使用以下命令scp文件到所有datenode节点：  
+
 ```
 scp ~/.ssh/authorized_keys root@dhc-5:~/.ssh/
 scp ~/.ssh/authorized_keys root@dhc-6:~/.ssh/
@@ -77,12 +82,15 @@ CentOS，自带OpenJdk，不过运行CDH5需要使用Oracle的Jdk，需要Java 7
 
 去Oracle的官网下载jdk的rpm安装包，并使用 rpm -ivh 包名 安装之。  
 而咱们公司中的jdk1.7放在：  
+
 ```
 /home/hadoop/Hadoop/CDH/CDHCentOS6/jdk-7u80-linux-x64.rpm 
 ```
 可以使用命令  
+
 `scp hadoop@192.168.1.110:/home/hadoop/Hadoop/CDH/CDHCentOS6/jdk-7u80-linux-x64.rpm /usr/local`  将jdk1.7放在/usr/local目录下，然后进入到此目录下，使用命令  `rpm -ivh  jdk-7u80-linux-x64.rpm`  安装jdk1.7。  
 由于是rpm包并不需要我们来配置环境变量，我们只需要配置一个全局的JAVA_HOME变量即可，执行命令：  
+
 ```
 echo "JAVA_HOME=/usr/java/latest/" >> /etc/environment
 ```
@@ -97,6 +105,7 @@ echo "JAVA_HOME=/usr/java/latest/" >> /etc/environment
 将本机自带的mysql数据库卸载。
 
 在线安装可以通过 yum install mysql-server 本例中，在本地ftp服务器上下载了一个MySQL的安装包，可以使用命令：  
+
 ```
 scp hadoop@192.168.1.110:/home/hadoop/Hadoop/CDH/CDHCentOS6/MySQL-5.5.49-1.el6.x86_64.rpm-bundle.tar /usr/local
 ```
@@ -110,6 +119,7 @@ scp hadoop@192.168.1.110:/home/hadoop/Hadoop/CDH/CDHCentOS6/MySQL-5.5.49-1.el6.x
 `mysqladmin -u root password 'xxxx'` 。  
 
 `mysql -uroot -p123456 `进入mysql命令行，创建以下数据库：
+
 ```
 #hive  
 create database hive DEFAULT CHARSET utf8 COLLATE utf8_general_ci;  
@@ -117,6 +127,7 @@ create database hive DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 create database amon DEFAULT CHARSET utf8 COLLATE utf8_general_ci; 
 ```
 设置root授权访问以上所有的数据库：
+
 ```
 #授权root用户在主节点拥有所有数据库的访问权限
 #grant all privileges on *.* to 'root'@'dhc-4' identified by '123456' with grant option;
@@ -128,11 +139,14 @@ http://www.cloudera.com/content/cloudera/en/documentation/cloudera-manager/v5-la
 ###注意： 
 需要在所有的节点上执行，因为涉及到的端口太多了，临时关闭防火墙是为了安装起来更方便，安装完毕后可以根据需要设置防火墙策略，保证集群安全。  
 关闭防火墙：  
+
 ```
 service iptables stop （临时关闭）  
 chkconfig iptables off （重启后生效）
+
 ```
 关闭SELINUX（实际安装过程中发现没有关闭也是可以的，不知道会不会有问题，还需进一步进行验证）:
+
 ```
 setenforce 0 （临时生效）  
 修改 /etc/selinux/config 下的 SELINUX=disabled （重启后永久生效） 
@@ -150,6 +164,7 @@ master节点作为ntp服务器与外界对时中心同步时间，随后对所�
 在配置之前，先使用ntpdate手动同步一下时间，免得本机与对时中心时间差距太大，使得ntpd不能正常同步。这里选用65.55.56.206作为对时中心, `ntpdate -u 65.55.56.206` 。
 
 ntp服务只有一个配置文件，配置好了就OK。 这里只给出有用的配置，不需要的配置都用#注掉，这里就不在给出：
+
 ```
 driftfile /var/lib/ntp/drift
 restrict 127.0.0.1
@@ -163,6 +178,7 @@ keys /etc/ntp/keys
 配置文件完成，保存退出，启动服务，执行如下命令： `service ntpd start`
 
 检查是否成功，用ntpstat命令查看同步状态，出现以下状态代表启动成功：  
+
 ```
 synchronised to NTP server () at stratum 2
 time correct to within 74 ms
@@ -171,6 +187,7 @@ polling server every 128 s
 
 如果出现异常请等待几分钟，一般等待5-10分钟才能同步。
 ###2 配置ntp客户端（所有datanode节点）  
+
 ```
 driftfile /var/lib/ntp/drift
 restrict 127.0.0.1
@@ -194,6 +211,7 @@ ok保存退出，请求服务器前，请先使用ntpdate手动同步一下时�
 
 ###1 主节点解压安装
 咱们公司内部的Cloudera manager存放在ftp服务器上，可以使用命令：  
+
 ```
 scp hadoop@192.168.1.110:/home/hadoop/Hadoop/CDH/CDHCentOS6/cdh5.3.2/cloudera-manager-el6-cm5.3.2_x86_64.tar.gz /opt
 ```
@@ -201,6 +219,7 @@ cloudera manager的目录默认位置在/opt下，解压： `tar xzvf cloudera-m
 ###2 为Cloudera Manager 5建立数据库  
 首先需要去MySql的官网下载JDBC驱动， http://dev.mysql.com/downloads/connector/j/ ，解压后，找到mysql-connector-java-5.1.33-bin.jar，放到/opt/cm-5.1.3/share/cmf/lib/中。  
 本公司内部可以使用命令：  
+
 ```
 scp hadoop@192.168.1.110:/home/hadoop/Hadoop/CDH/CDHCentOS6/mysql-connector-java-5.1.36.tar.gz /usr/local 
 ```
@@ -215,12 +234,14 @@ scp hadoop@192.168.1.110:/home/hadoop/Hadoop/CDH/CDHCentOS6/mysql-connector-java
 ##十 Agent配置  
 修改/opt/cm-5.3.2/etc/cloudera-scm-agent/config.ini中的server_host为主节点的主机名。  
 ###1 同步Agent到其他节点
+
 ```
 scp -r /opt/cm-5.3.2 root@dhc-5:/opt/
 scp -r /opt/cm-5.3.2 root@dhc-6:/opt/
 ```
 
 ###2 在所有节点创建cloudera-scm用户  
+
 ```
 useradd --system --home=/opt/cm-5.3.2/run/cloudera-scm-server/ --no-create-home --shell=/bin/false --comment "Cloudera SCM User" cloudera-scm
 ```
@@ -252,54 +273,56 @@ scp hadoop@192.168.1.110:/home/hadoop/Hadoop/CDH/CDHCentOS6/cdh5.3.2/manifest.js
 Cloudera Manager Server和Agent都启动以后，就可以进行CDH5的安装配置了。
 
 这时可以通过浏览器访问主节点的7180端口测试一下了（由于CM Server的启动需要花点时间，这里可能要等待一会才能访问），默认的用户名和密码均为admin：  
-![](images/15/lbClZhF.png)
+![](../images/15/lbClZhF.png)
 可以在下图中看到，免费版本的CM5已经没有原来50个节点数量的限制了。
-![](images/15/QrOl2Ux.png)
+![](../images/15/QrOl2Ux.png)
 各个Agent节点正常启动后，可以在当前管理的主机列表中看到对应的节点。选择要安装的节点，点继续。
-![](images/15/cEHKp6M.png)
+![](../images/15/cEHKp6M.png)
 接下来，出现以下包名，说明本地Parcel包配置无误，直接点继续就可以了。
-![](images/15/pPHZEpo.png)
+![](../images/15/pPHZEpo.png)
 点击，继续，如果配置本地Parcel包无误，那么下图中的已下载，应该是瞬间就完成了，然后就是耐心等待分配过程就行了，大约10多分钟吧，取决于内网网速。
 
-![](images/15/oDvJINJ.png)
+![](../images/15/oDvJINJ.png)
 
 接下来是服务器检查，可能会遇到以下问题：
 
 Cloudera 建议将 /proc/sys/vm/swappiness 设置为 0。当前设置为 60。使用 sysctl 命令在运行时更改该设置并编辑 /etc/sysctl.conf 以在重启后保存该设置。您可以继续进行安装，但可能会遇到问题，Cloudera Manager 报告您的主机由于交换运行状况不佳。以下主机受到影响：
 通过 `echo 0 > /proc/sys/vm/swappiness `(在主每个点的主机上运行）即可解决。
 下面还有一个问题，是hive数据库缺少MySQL的jdbc的jar包，可以使用下面的命令：
+
 ```
 cp /opt/cm-5.3.2/share/cmf/lib/mysql-connector-java-5.1.36-bin.jar /opt/cloudera/parcels/CDH-5.3.2-1.cdh5.3.2.p0.10/lib/hive/lib/
 ```
 
 运行完成以后，点击继续。
 
-![](images/15/KXdWwDC.png)
+![](../images/15/KXdWwDC.png)
 
 
 只有当所有选项前面都有对号之后才是正确的。  
 接下来是选择安装服务：
-![](images/15/bKwqzF8.png)
+![](../images/15/bKwqzF8.png)
 服务配置，一般情况下保持默认就可以了（Cloudera Manager会根据机器的配置自动进行配置，如果需要特殊调整，自行进行设置就可以了）：
-![](images/15/gqefAKw.png)
+![](../images/15/gqefAKw.png)
 接下来是数据库的设置，检查通过后就可以进行下一步的操作了：
-![](images/15/fjdr7lP.png)
+![](../images/15/fjdr7lP.png)
 下面是集群设置的审查页面，我这里都是保持默认配置的：
-![](images/15/ljRHAXb.png)
+![](../images/15/ljRHAXb.png)
 终于到安装各个服务的地方了，注意，这里安装Hive的时候可能会报错，因为我们使用了MySql作为hive的元数据存储，hive默认没有带mysql的驱动，通过以下命令拷贝一个就行了：
 
 ```
 cp /opt/cm-5.3.2/share/cmf/lib/mysql-connector-java-5.1.36-bin.jar /opt/cloudera/parcels/CDH-5.3.2-1.cdh5.2.3.p0.12/lib/hive/lib/
-```
-![](images/15/yx9oU47.png)
+```]
+
+![](../images/15/yx9oU47.png)
 服务的安装过程大约半小时内就可以完成：
 ![](http://i.imgur.com/Zhbo37J.png)
 安装完成后，就可以进入集群界面看一下集群的当前状况了。
 
 这里可能会出现 无法发出查询：对 Service Monitor 的请求超时 的错误提示，如果各个组件安装没有问题，一般是因为服务器比较卡导致的，过一会刷新一下页面就好了：
-![](images/15/Iv8rg9R.png)
+![](../images/15/Iv8rg9R.png)
 在每台主机上面修改一下ntp的配置就可：
-![](images/15/t6cRbTh.png)
+![](../images/15/t6cRbTh.png)
 
 
 还有一个要修改的地方,就是到最后的话会在HDFS上面出错，可以使用下面的命令进行配置： 

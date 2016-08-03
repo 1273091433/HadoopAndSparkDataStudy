@@ -288,8 +288,8 @@ $hdfs dfsadmin -report
 可以访问http://192.168.1.80:50070/ 查看结果
 ```
 
-![](../images/4/jps1.png)
-![](../images/4/jps2.png)
+![](../../images/4/jps1.png)
+![](../../images/4/jps2.png)
 
 
 
@@ -304,7 +304,7 @@ $ hdfs dfs -put /usr/local/hadoop/etc/hadoop/*.xml input
 
 ```
 通过查看 DataNode 的状态（占用大小有改变），输入文件确实复制到了 DataNode 中，如下图所示：
-![](../images/4/hdfssave.png)
+![](../../images/4/hdfssave.png)
 
 #执行分布式的实验-MapReduce
 执行MapReduce作业
@@ -318,7 +318,7 @@ hadoop jar /usr/local/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-*.
 可能会有点慢，但如果迟迟没有进度，比如 5 分钟都没看到进度，那不妨重启 Hadoop 再试试。若重启还不行，则很有可能是内存不足引起，建议增大虚拟机的内存，或者通过更改 YARN 的内存配置解决。   
 同样可以通过 Web 界面查看任务进度 http://master:8088/cluster，在 Web 界面点击 “Tracking UI” 这一列的 History 连接，可以看到任务的运行信息，如下图所示：
 
-![](../images/4/yarnfinish.png)
+![](../../images/4/yarnfinish.png)
 
 ```
 关闭集群

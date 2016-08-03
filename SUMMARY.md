@@ -7,7 +7,7 @@
 * [第三章 Hadoop是什么](Content/chapter3.md)
     * [1.基本概念](Content/chapter0301.md)
     * [2.原理漫画](Content/chapter0302.md)
-* [第四章 Hadoop的安装](Content/4/chapter4.md)
+* [第四章 Hadoop的安装](Content/4/chapter0401.md)
     * [1.Hadoop 2.6.2伪分布式](Content/4/chapter0401.md)
     * [2.Hadoop 2.6.2完全分布式](Content/4/chapter0402.md)
     * [3 Hadoop 2.7.2完全分布式](Content/4/chapter0404.md)

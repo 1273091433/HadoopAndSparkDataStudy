@@ -52,9 +52,10 @@ sudo update-alternatives --config javac
 2. 创建hadoop用户
 3. 给hadoop用户添加权限,打开/etc/sudoers文件
 
-```chu888chu888@ubuntu1:/$ sudo addgroup hadoop```  
-```chu888chu888@ubuntu1:/$ sudo adduser -ingroup hadoop hadoop``` 
-```chu888chu888@ubuntu1:/$ sudo nano /etc/sudoers``` 
+```
+chu888chu888@ubuntu1:/$ sudo addgroup hadoop
+chu888chu888@ubuntu1:/$ sudo adduser -ingroup hadoop hadoop
+chu888chu888@ubuntu1:/$ sudo nano /etc/sudoers
 ```
 # User privilege specification
 root    ALL=(ALL:ALL) ALL

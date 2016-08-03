@@ -108,6 +108,7 @@ export PATH=$PATH:$SCALA_HOME/bin
 ```
 
 然后使环境变量生效，并验证 Java 是否安装成功
+
 ```
 $ source /etc/profile   #生效环境变量
 $ java -version         #如果打印出如下版本信息，则说明安装成功
@@ -119,6 +120,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 24.75-b04, mixed mode)
 
 ###5.安装 Scala
 Spark官方要求 Scala 版本为 2.10.x，注意不要下错版本，我这里下了 2.10.6
+
 ```
 tar -zxvf scala-2.10.4.tgz
 再次修改环境变量sudo vi /etc/profile，添加以下内容：
@@ -202,15 +204,17 @@ $jps
 ./bin/run-example SparkPi 10 --master local[2]
 
 **Spark Standalone 集群模式运行**
+
 ```
 ./spark-submit --class org.apache.spark.examples.SparkPi --master spark://Master:7077 /usr/local/spark/lib/spark-examples-1.6.0-hadoop2.6.0.jar 100
 ```
 
 **Spark on YARN 集群上 yarn-cluster 模式运行**
+
 ```
 ./spark-submit --class org.apache.spark.examples.SparkPi --master yarn-cluster /usr/local/spark/lib/spark-examples-1.6.0-hadoop2.6.0.jar 10
 ```
-![](images/13/chapter1301sparkfinish.png)
+![](../images/13/chapter1301sparkfinish.png)
 注意 Spark on YARN 支持两种运行模式，分别为yarn-cluster和yarn-client，具体的区别可以看这篇博文，从广义上讲，yarn-cluster适用于生产环境；而yarn-client适用于交互和调试，也就是希望快速地看到application的输出。
 
 

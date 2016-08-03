@@ -250,11 +250,11 @@ su - oracle，其中oracle就是在上面配置文件内写的帐号）
 #### Ⅴ.建立VNC链接
 配置VNC完成后，需要执行命令service vncserver restart重新启动VNC。然后打开安装在Windows中的VNC，输入要连接的服务器IP。注意冒号后边对应的是你设置的VNC用户对应的用户名编号。如下图所示
 
-![](http://i.imgur.com/CLfU10O.png)
+![](../images/24/CLfU10O.png)
 
 **注意：直接连接会发现连接超时。**如下图所示：
 
-![](http://i.imgur.com/PvqeyV3.png)
+![](../images/24/PvqeyV3.png)
 
 解决方法：开启防火墙VNCServer端口  
 首先编辑/etc/sysconfig/iptables文件
@@ -271,11 +271,11 @@ su - oracle，其中oracle就是在上面配置文件内写的帐号）
 
 
 
-![](http://i.imgur.com/P35jLbj.png)
+![](../images/24/P35jLbj.png)
 
 点击display后会弹出如下图所示的窗口，根据自己的需求更改分辨率
 
-![](http://i.imgur.com/gKN2jT6.png)
+![](../images/24/gKN2jT6.png)
    
 然后新打开一个终端，在命令行中执行
 export DISPLAY=localhost:1.0（要连接服务器IP：vnc用户对应的编号）命令与xhost +命令 
@@ -286,7 +286,7 @@ export DISPLAY=localhost:1.0（要连接服务器IP：vnc用户对应的编号�
 
 表示linux下视窗环境已经准备OK，可以进行oracle安装。如下图
 
-![](http://i.imgur.com/N7wtCwY.png)
+![](../images/24/N7wtCwY.png)
 
 ## 4.安装过程
 
@@ -313,57 +313,57 @@ Checking monitor: must be configured to display at least 256 colors    Failed <<
 然后vnc就会弹出安装界面窗口。过程如下各图：  
 不建议填写email，下边的创建密码选项可以不选，点击next(填写有可能卡死在这个地方)
 
-![](http://i.imgur.com/om5Uk6y.png)
+![](../images/24/om5Uk6y.png)
 
 选择i want to remain........，点击continue
 
-![](http://i.imgur.com/y0hrA5e.png)
+![](../images/24/y0hrA5e.png)
 
 选择第二个仅安装数据库软件，点击next
 
-![](http://i.imgur.com/z7nf3gL.png)
+![](../images/24/z7nf3gL.png)
 
 选择第一个，点击next
 
-![](http://i.imgur.com/eCuyKkp.png)
+![](../images/24/eCuyKkp.png)
 
 选择如下图所示的languages，点击next
 
-![](http://i.imgur.com/R4NW230.png)
+![](../images/24/R4NW230.png)
 
 选择第一个，点击next
 
-![](http://i.imgur.com/Lg5qdlq.png)
+![](../images/24/Lg5qdlq.png)
 
 默认点击next
 
-![](http://i.imgur.com/gA0DH7t.png)
+![](../images/24/gA0DH7t.png)
 
 默认点击next
 
-![](http://i.imgur.com/YBAR9sW.png)
+![](../images/24/YBAR9sW.png)
 
 按下图选择组名，点击next
 
-![](http://i.imgur.com/1oG3Yca.png)
+![](../images/24/1oG3Yca.png)
 
 由于CentOS版本较高，所以Oracle11g在check的时候不识别高版本lib包，选择lgnore All，点击next
 
-![](http://i.imgur.com/xSBhgxX.png)
+![](../images/24/xSBhgxX.png)
 
 点击finish开始安装
 
-![](http://i.imgur.com/6pUsTjx.png)
+![](../images/24/6pUsTjx.png)
 
 安装快结束时，会弹出一个窗口通知要执行两个脚本，点击OK，再点击close结束安装
 
-![](http://i.imgur.com/BigEi8o.png)
+![](../images/24/BigEi8o.png)
 
 执行之前提示的两个脚本，分别cd进入相应的路径下，执行sh orainstRoot.sh和sh root.sh如下图
 
-![](http://i.imgur.com/SjYi6pz.png)
+![](../images/24/SjYi6pz.png)
 
-![](http://i.imgur.com/mOcWjAo.png)
+![](../images/24/mOcWjAo.png)
 
 至此oracle安装已经完成
 
@@ -376,7 +376,7 @@ Checking monitor: must be configured to display at least 256 colors    Failed <<
 
 显示如下图： 
 
-![](http://i.imgur.com/VkL3QA5.png)
+![](../images/24/VkL3QA5.png)
 
 然后再执行相应的执行命令。
 
@@ -384,109 +384,109 @@ Checking monitor: must be configured to display at least 256 colors    Failed <<
 
 选择Listener configuration，点击next
 
-![](http://i.imgur.com/aLwyOFb.png)
+![](../images/24/aLwyOFb.png)
 
 默认选择Add，点击next
 
-![](http://i.imgur.com/y2uN7zV.png)
+![](../images/24/y2uN7zV.png)
 
 设置监听器名称，点击next
 
-![](http://i.imgur.com/rMK5EkX.png)
+![](../images/24/rMK5EkX.png)
 
 默认选择TCP，点击next
 
-![](http://i.imgur.com/cEC3AOv.png)
+![](../images/24/cEC3AOv.png)
 
 默认选择Use the standard port number of 1521,点击next
 
-![](http://i.imgur.com/ZaOkvID.png)
+![](../images/24/ZaOkvID.png)
 
 默认选择No，点击next
 
-![](http://i.imgur.com/JBa73Nb.png)
+![](../images/24/JBa73Nb.png)
 
 点击next
 
-![](http://i.imgur.com/sV3VqNH.png)
+![](../images/24/sV3VqNH.png)
 
 点击next后点击finish完成监听器创建。创建完监听器后执行./dbca文件创建数据库。  
 
 点击Next
 
-![](http://i.imgur.com/qL3Rx04.png)
+![](../images/24/qL3Rx04.png)
 
 选择Create a Database，点击Next
 
-![](http://i.imgur.com/RNqz7e7.png)
+![](../images/24/RNqz7e7.png)
 
 选择Custom Database，点击Next
 
-![](http://i.imgur.com/PR5d4Zl.png)
+![](../images/24/PR5d4Zl.png)
 
 Global Database Name框：输入前面设定的数据库名  
 SID框：自动出现和数据库名相同的内容作为数据库实例名，单实例情况下不作改动  
 点击Next
 <p>注意：下图的global database name必须跟之前.bash_profile里边设的ORACLE_SID的名字相同。</p>
 
-![](http://i.imgur.com/2PzCE3F.png)
+![](../images/24/2PzCE3F.png)
 
 默认所选，点击Next
 
-![](http://i.imgur.com/oJx6vu3.png)
+![](../images/24/oJx6vu3.png)
 
 Use Different Administrative Passwords表格的Password和Confirm Password列中分别为User Name列SYS、SYSTEM、DBSNMP和SYSMAN用户输入口令并重复一次输入（如密码设置过于简单，下一步前会有弹出窗口提示确认接受安全风险）sys和system密码设置可以在数据库建立后修改。  
 这里选择使用相同密码。点击Next
 
-![](http://i.imgur.com/U7pGgzi.png)
+![](../images/24/U7pGgzi.png)
 
 提示设置的密码过于简单存在安全风险是否继续
 
-![](http://i.imgur.com/enz5G6o.png)
+![](../images/24/enz5G6o.png)
 
 按照图示选择，点击Next
 
-![](http://i.imgur.com/GKSs0PS.png)
+![](../images/24/GKSs0PS.png)
 
 默认所选，点击Next
 
-![](http://i.imgur.com/MNloHy6.png)
+![](../images/24/MNloHy6.png)
 
 默认所选，点击Next
 
-![](http://i.imgur.com/DCXY2QT.png)
+![](../images/24/DCXY2QT.png)
 
 默认所选，点击Character Sets
 
-![](http://i.imgur.com/y1oDAJV.png)
+![](../images/24/y1oDAJV.png)
 
 按照图示选择兼容utf8的选项，点击Next
 
-![](http://i.imgur.com/DSz2Oba.png)
+![](../images/24/DSz2Oba.png)
 
 在File Location Variables里可以看到一些基础参数信息。点击Next
 
-![](http://i.imgur.com/fXkIU4G.png)
+![](../images/24/fXkIU4G.png)
 
 选择Generate Database Creation Scripts，默认为/home/oracle/app/oracle/admin/powerdes/scripts，点击Finish
 
-![](http://i.imgur.com/hU30qQz.png)
+![](../images/24/hU30qQz.png)
 
 点击OK
 
-![](http://i.imgur.com/gAkhmho.png)
+![](../images/24/gAkhmho.png)
 
 点击OK
 
-![](http://i.imgur.com/7J8tK13.png)
+![](../images/24/7J8tK13.png)
 
 等待创建
 
-![](http://i.imgur.com/BW8Wi4x.png)
+![](../images/24/BW8Wi4x.png)
 
 点击Exit完成创建
 
-![](http://i.imgur.com/U8BelDC.png)
+![](../images/24/U8BelDC.png)
 
 创建完数据库后启动数据库  
 如果在切换用户进入数据库时，执行lsnrctl start或是执行sqlplus “/ as sysdba ”报出如下错误

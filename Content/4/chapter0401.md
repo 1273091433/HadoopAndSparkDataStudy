@@ -297,8 +297,8 @@ hadoop@ubuntu2:/usr/local/hadoop$
 
 成功启动后，可以访问 Web 界面 http://localhost:50070 查看 NameNode 和 Datanode 信息，还可以在线查看 HDFS 中的文件。
 ```
-![](../images/4/111.png)
-![](../images/4/222.png)
+![](../../images/4/111.png)
+![](../../images/4/222.png)
 
 ##运行伪分布式实例
 1 上面的单机模式，grep 例子读取的是本地数据，伪分布式读取的则是 HDFS 上的数据。要使用 HDFS，首先需要在 HDFS 中创建用户目录：
@@ -430,7 +430,7 @@ hadoop@ubuntu2:/usr/local/hadoop$ jps
 hadoop@ubuntu2:/usr/local/hadoop$ 
 
 ```
-![](../images/4/yarn.png)
+![](../../images/4/yarn.png)
 但 YARN 主要是为集群提供更好的资源管理与任务调度，然而这在单机上体现不出价值，反而会使程序跑得稍慢些。因此在单机上是否开启 YARN 就看实际情况了。
 
 不启动 YARN 需重命名 mapred-site.xml

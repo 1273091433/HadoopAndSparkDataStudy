@@ -207,7 +207,7 @@ SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
 16/03/03 01:32:14 INFO mapreduce.ImportJobBase: Retrieved 20050144 records.
 
 ```
-![](images/9/chapter09sqoopmapreduce.png)
+![](../../images/9/chapter09sqoopmapreduce.png)
 
 ```
 导出mysql表全部数据到hive

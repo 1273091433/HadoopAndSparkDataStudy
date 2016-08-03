@@ -3,7 +3,7 @@ Apache Sqoop（SQL-to-Hadoop） 项目旨在协助 RDBMS 与 Hadoop 之间进行
 
 理论上，Sqoop 支持任何一款支持 JDBC 规范的数据库，如 DB2、MySQL 等。Sqoop 还能够将 DB2 数据库的数据导入到 HDFS 上，并保存为多种文件类型。常见的有定界文本类型，Avro 二进制类型以及 SequenceFiles 类型。在本文里，统一用定界文本类型。
 
-![](images/9/chapter09mapreduce.png)
+![](../../images/9/chapter09mapreduce.png)
 
 Sqoop中一大亮点就是可以通过hadoop的mapreduce把数据从关系型数据库中导入数据到HDFS。Sqoop架构非常简单，其整合了Hive、Hbase和Oozie，通过map-reduce任务来传输数据，从而提供并发特性和容错。
 
@@ -20,11 +20,11 @@ sqoop1和sqoop2在架构和用法上已经完全不同。在架构上，sqoop1�
 
 **Sqoop1架构图：**
 
-![](images/9/chapter09sqoop1.png)
+![](../../images/9/chapter09sqoop1.png)
 
 **Sqoop2架构图：**
 
-![](images/9/chapter09sqoop2.png)
+![](../../images/9/chapter09sqoop2.png)
 
 两个不同的版本，完全不兼容 版本号划分区别.
 

@@ -1,22 +1,22 @@
 # 第四章 SQL语法练习
 
-![](images/16/chapter0401.png)
+![](../../images/16/chapter0401.png)
 
-![](images/16/chapter0402.png)
+![](../../images/16/chapter0402.png)
 
-![](images/16/chapter0403.png)
+![](../../images/16/chapter0403.png)
 
-![](images/16/chapter0405.png)
+![](../../images/16/chapter0405.png)
 
-![](images/16/chapter0406.png)
+![](../../images/16/chapter0406.png)
 
-![](images/16/chapter0407.png)
+![](../../images/16/chapter0407.png)
 
-![](images/16/chapter0408.png)
+![](../../images/16/chapter0408.png)
 
-![](images/16/chapter0409.png)
+![](../../images/16/chapter0409.png)
 
-![](images/16/chapter0410.png)
+![](../../images/16/chapter0410.png)
 
 
 ##SQL 练习

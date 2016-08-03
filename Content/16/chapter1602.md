@@ -20,6 +20,7 @@ Inceptor是一种交互式分析引擎，本质是一种SQL翻译器。Inceptor�
 1. 从HDFS导入数据
 
  1. 创建HDFS数据目录，在本地创建一个存放数据的文件夹，为了区分不同用户和不同数据源，建立以下两个目录
+ 
 ```
 hadoop fs -mkdir -p /user/user1/data／inceptor
 hadoop fs -mkdir -p /user/user1/data／hyperbase
@@ -27,11 +28,13 @@ hadoop fs -mkdir -p /user/user1/data／hyperbase
 
  1. 首先将本地path存放的数据文件put到HDFS目录中，数据可以存放在集群中的任意一台机器中（注意本步操作可能会报load数据没有权限，HDFS上的数据和表的权限不一致
 使用：（sudo -u hdfs hadoop fs -chown -R hive /user/＊）命令进行owner的修改，hive为owner名字）或者使用sudo -u hdfs hadoop fs -chmod -R 777 /user/*
+
 ```
 hadoop fs -put <path>/data.txt /user/user1/data/inceptor
 ```
 
  1. 将上传进HDFS的文件load到Inceptor事先建立好的s3表中,在Inceptor中输入如下命令：
+ 
 ```
 load data inpath ‘/user/user1/data/inceptor/data.txt’ into table s3;
 ```
@@ -39,16 +42,19 @@ load data inpath ‘/user/user1/data/inceptor/data.txt’ into table s3;
 2. 从其他表导入
 
  2. 将t3的表结构复制给t4，注意不复制数据
+ 
 ```
 create table t4 like t3;
 ```
 
  2. 查看
+ 
 ```
 select * from t4;
 ```
 
  2. 将t3表中的数据插入到t4表中
+ 
 ```
 insert into table t4 select * from t3;
 ```
@@ -59,17 +65,20 @@ insert into table t4 select * from t3;
 1. 创建单值分区
 
  1. 创建单值分区表（每创建一个单值分区表就会产生一个小文件，这里只有一个name值）
+
 ```
 create table single_tbl(name string) partitioned by(level string);
 ```
 (注意后面的partition分区键和文本是无关的！文本只导入name！分区键是通过load语句中的level具体标识来指定的)
 
  1. 把本地包含单列数据的txt文件put到HDFS中的/user/datadir目录中
+
 ```
 hadoop fs -put /tmp/a.txt /user/datadir 
 ```
 
  1. 将HDFS中的a.txt文件load到single_tbl单值分区表，即将a这个文档都设置成A标签
+
 ```
 load data inpath ‘user/datadir/a.txt’ single_tbl partition(level='A');
 ```
@@ -77,6 +86,7 @@ load data inpath ‘user/datadir/a.txt’ single_tbl partition(level='A');
 2. 创建范围分区表（用于避免全表扫描，快速检索，导入数据的方法也很少，只能通过从另一个表插入到范围表中，其产生原因是为了规避单值分区每创建一个表就会产生一个小文件，而范围分区则是每个分区存储一个文件）
 
  2. 创建范围分区表rangepart
+
 ```
 create table rangepart(name string)partitioned by range(age int)(
             partition values less than(30),
@@ -88,21 +98,25 @@ create table rangepart(name string)partitioned by range(age int)(
 （注意分区表为左闭右开区间）
 
  2. 将本地文件或文件夹put到HDFS的user/datadir的目录中
+
 ```
 hadoop fs -put /tmp/b.txt user/datadir
 ```
 
  2. 创建外表，来将HDFS中的文件进行导入进来(外表是用来指定导入数据格式的，且drop外表时，HDFS上的数据还存在)
+
 ```
 create external table userinfo(name string,age int) row format delimited fields terminated by ',' location 'user/datadir';
 ```
 
  2. 将外表的数据插入到建立好的rangepart表中
+
 ```
 insert into table rangepart select * from userinfo;
 ```
 
  2. 查看插入分区表里的数据分布
+
 ```
 show partitions rangepart;
 ```
@@ -112,26 +126,31 @@ show partitions rangepart;
 （必须创建外表，只支持从外表导入数据，在分桶表中经常做聚合和join操作，速度非常快。另外分桶规则主要分为1、int型，按照数值取模，分几个桶就模几2、string型，按照hash表来分桶）
 
 1. 创建分桶表bucket_tbl(这里分桶的大小是用表的总数据大小除以200M，经实际优化测试，每个桶的数据为200M处理速度最优)
+
 ```
 create table bucket_tbl(id int, name string) clustered by (id) into 3 buckets;
 ```
 
 2. 创建外表bucket_info,bucket_info表会自动将HDFS目录/user/datadir中的数据自动load进表里，这和普通表需要手动进行load不一样
+
 ```
 create external table bucket_info(id int, name string)row format delimited fields terminated by ',' location '/user/datadir';
 ```
 
 3. 将从本地txt文件put到HDFS中的表（如普通表），再load进外表中
+
 ```
 load data inpath '/user/tdh/data/bucket-data' into table bucket_info;
 ```
 
 4. 设置分桶开关
+
 ```
 set hive.enforce.bucketing=true;
 ```
 
 5. 插入数据（按照取模大小顺序排列）
+
 ```
 insert into table bucket_tbl select *from bucket_info;
 ```
@@ -168,11 +187,13 @@ cache.checkpoint"="true|false"指定是否设置checkpoint。如果设置checkpo
 ###五、建立ORC格式表，如下三种方式
 
 （1）
+
 ```
 create table country（id int，country string）stored as orc;
 ```
 
 （2）
+
 ```
 create external table ex_tbl(id int,country string)
         row format delimited fields terminated by ','
@@ -181,6 +202,7 @@ create external table ex_tbl(id int,country string)
 ```
 
 （3）
+
 ```
 insert into country select * from ex_tbl;
 ```
@@ -191,10 +213,12 @@ insert into country select * from ex_tbl;
 
 ###六、建立ORC格式事务表（必须要分桶，既可以单值插入，又可以通过外表插入）
 （1）
+
 ```
 create table orc_tbl(id int, country string) clustered by (id) into 3 buckets stored as orc tblproperties("transactional" = "true");
 ```
 （2）(创建外表需要注意的是，一定要指定分隔符，不然当external表自动加载HDFS中的/user/datadir时不知道以什么分隔数据，造成查询出的数据全部都是null值)
+
 ```
 create external table external_tbl(id int,country string) row format delimited fields terminated by ',' location '/user/datadir';
 ```
@@ -205,6 +229,7 @@ create external table external_tbl(id int,country string) row format delimited f
 set hive.enforce.bucketing=true;
 ```
 （4）
+
 ```
 insert into orc_tbl select * from external_tbl;
 ```
@@ -261,6 +286,7 @@ hdfs：//nameservice/inceptorsql1/user/hive/warehouse/
     hdfs dfs：命令只能操作HDFS文件系统相关。
 
 ##附录（示例代码）
+
 ```
 --登录Inceptor server节点
 beeline -u jdbc:hive2://172.16.2.75:10000/
