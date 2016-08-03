@@ -1,11 +1,25 @@
-# 2.HBASE常用的Shell命令
+# HBASE常用的Shell命令
 
-## 表的管理
-####1 查看有哪些表
+## 一 表的管理
 
-```hbase(main)> list```
+### 1进入hbase shell console
+```
+$HBASE_HOME/bin/hbase shell
+```
 
-####2 创建表
+如果有kerberos认证，需要事先使用相应的keytab进行一下认证（使用kinit命令），认证成功之后再使用hbase shell进入可以使用whoami命令可查看当前用户
+
+```
+hbase(main)> whoami
+```
+
+###2 查看有哪些表
+
+```
+hbase(main)> list
+```
+
+###3 创建表
 
 ```
 语法：create <table>, {NAME => <family>, VERSIONS => <VERSIONS>}
@@ -14,10 +28,13 @@
 hbase(main)> create 't1',{NAME => 'f1', VERSIONS => 2},{NAME => 'f2', VERSIONS => 2}
 
 ```
+
 **创建表t1,列族为f1,列族版本号为5,命令如下**
+
 ```
 hbase(main):002:0> create 't1',{NAME=>'f1',VERSIONS=>5}
 ```
+
 **或者使用如下等价的命令**
 
 ```
@@ -35,14 +52,16 @@ hbase(main):006:0* create 't3','f1',{NUMREGIONS=>15,SPLITALGO=>'HexStringSplit'}
 ```
 hbase(main):007:0> create 't4','f1',{SPLITS=>['10','20','30','40']}
 ```
+
 **put:向表/行/列指定的单元格添加数据**
 
 **向表t1中行row1,列f1:1,添加数据value1,时间戳为14222222222,命令如下:**
+
 ```
 hbase(main):009:0> put 't1','row1','f1:1','value1',55555434344
 ```
 
-####3 删除表
+###4 删除表
 
 分两步：首先disable，然后drop,例如：删除表t1
 
@@ -52,7 +71,7 @@ hbase(main)> drop 't1'
 ```
 
 
-####4 查看表的结构
+###5 查看表的结构
 
 ```
 语法：describe <table>
@@ -61,7 +80,8 @@ hbase(main)> describe 't1'
 ```
 
 
-####5 修改表结构
+###6 修改表结构
+
 ```
 修改表结构必须先disable
 语法：alter 't1', {NAME => 'f1'}, {NAME => 'f2', METHOD => 'delete'}
@@ -72,8 +92,8 @@ hbase(main)> enable 'test1'
 
 ```
 
-## 权限管理
-####1 分配权限
+## 二 权限管理
+###1 分配权限
 
 ```
 语法 : grant <user> <permissions> <table> <column family> <column qualifier> 
@@ -84,7 +104,7 @@ hbase(main)> grant 'test','RW','t1'
 ```
 
 
-####2 查看权限
+###2 查看权限
 ```
 语法：user_permission <table>
 例如，查看表t1的权限列表
@@ -92,7 +112,7 @@ hbase(main)> user_permission 't1'
 ```
 
 
-####3 收回权限
+###3 收回权限
 ```
 与分配权限类似，语法：revoke <user> <table> <column family> <column qualifier>
 例如，收回test用户在表t1上的权限
@@ -101,9 +121,9 @@ hbase(main)> revoke 'test','t1'
 
 
 
-## 表数据的增删改查
+## 三表数据的增删改查
 
-####1 添加数据
+###1 添加数据
 ```
 语法：put <table>,<rowkey>,<family:column>,<value>,<timestamp>
 例如：给表t1的添加一行记录：rowkey是rowkey001，family name：f1，column name：col1，value：value01，timestamp：系统默认
@@ -111,7 +131,7 @@ hbase(main)> put 't1','rowkey001','f1:col1','value01'
 用法比较单一。
 ```
 
-####2 查询某行记录
+###2 查询某行记录
 
 ```
 语法：get <table>,<rowkey>,[<family:column>,....]
@@ -124,7 +144,7 @@ hbase(main)> get 't1','rowkey001'
 ```
 
 
-####3 扫描表
+###3 扫描表
 ```
 语法：scan <table>, {COLUMNS => [ <family:column>,.... ], LIMIT => num}
 另外，还可以添加STARTROW、TIMERANGE和FITLER等高级功能
@@ -132,7 +152,7 @@ hbase(main)> get 't1','rowkey001'
 hbase(main)> scan 't1',{LIMIT=>5}
 ```
 
-####4 查询表中的数据行数
+###4 查询表中的数据行数
 ```
 语法：count <table>, {INTERVAL => intervalNum, CACHE => cacheNum}
 INTERVAL设置多少行显示一次及对应的rowkey，默认1000；CACHE每次去取的缓存区大小，默认是10，调整该参数可提高查询速度
@@ -141,9 +161,9 @@ hbase(main)> count 't1', {INTERVAL => 100, CACHE => 500}
 ```
 
 
-## 删除数据
+##三 删除数据
 
-####1 删除行中的某个列值
+###1 删除行中的某个列值
 
 ```
 语法：delete <table>, <rowkey>,  <family:column> , <timestamp>,必须指定列名
@@ -153,7 +173,8 @@ hbase(main)> delete 't1','rowkey001','f1:col1'
 ```
 
 
-####2 删除行
+###2 删除行
+
 ```
 语法：deleteall <table>, <rowkey>,  <family:column> , <timestamp>，可以不指定列名，删除整行数据
 例如：删除表t1，rowk001的数据
@@ -162,6 +183,7 @@ hbase(main)> deleteall 't1','rowkey001'
 
 
 ###3 删除表中的所有数据
+
 ```
 语法： truncate <table>
 其具体过程是：disable table -> drop table -> create table
@@ -170,9 +192,9 @@ hbase(main)> truncate 't1'
 
 ```
 
-## Region管理
+##四 Region管理
 
-####1 移动region
+###1 移动region
 
 ```
 语法：move 'encodeRegionName', 'ServerName'
@@ -182,7 +204,7 @@ hbase(main)>move '4343995a58be8e5bbc739af1e91cd72d', 'db-41.xxx.xxx.org,60020,13
 ```
 
 
-####2 开启/关闭region
+###2 开启/关闭region
 
 ```
 语法：balance_switch true|false
@@ -190,11 +212,12 @@ hbase(main)> balance_switch
 ```
 
 
-####3 手动split
+###3 手动split
 
 语法：split 'regionName', 'splitKey'
 
-####4 手动触发major compaction
+###4 手动触发major compaction
+
 ```
 语法：
 Compact all regions in a table:
