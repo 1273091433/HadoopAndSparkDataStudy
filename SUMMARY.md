@@ -74,5 +74,5 @@
     * [1.运维常用工具](Content/chapter2201.md)
 * [第十八章 机器学习入门](Content/chapter23.md)
 * [第十九章 Centos下的Oracle安装](Content/chapter24.md)
-* [附录 Hadoop运维技能要求](Content/HadoopRequest.md)
+* [附录 Hadoop运维技能要求](Content/HadoopTrainingSheet.md)
 
