@@ -16,16 +16,19 @@ Apache Phoenix是构建在HBase之上的关系型数据库层，作为内嵌的�
 #sudo mv phoenix-4.7.0-HBase-1.1 /usr/local/phoenix
 #sudo cp /usr/local/phoenix/*.jar /usr/local/hbase/lib/
 #sudo cp /usr/local/hbase/conf/hbase-site.xml /usr/local/phoenix/bin/
+hadoop@hadoopmaster:/usr/local$ sudo tar cvfz ~/phoenix2016.tar.gz phoenix/
+scp /home/hadoop/phoenix2016.tar.gz hadoop@hadoopslave1:/home/hadoop/
+scp /home/hadoop/phoenix2016.tar.gz hadoop@hadoopslave2:/home/hadoop/
 ```
 
 **在Slave上面的操作**
 
 ```
-#sudo tar xvfz phoenix-4.7.0-HBase-1.1-bin.tar.gz 
-#sudo chown -R hadoop:hadoop phoenix-4.7.0-HBase-1.1
-#sudo chmod -R 775 phoenix-4.7.0-HBase-1.1
-#sudo mv phoenix-4.7.0-HBase-1.1 /usr/local/phoenix
-#sudo cp /usr/local/phoenix/*.jar /usr/local/hbase/lib/
+hadoop@hadoopslave1:~$ tar xvfz phoenix2016.tar.gz
+hadoop@hadoopslave1:~$ sudo mv phoenix /usr/local/phoenix
+hadoop@hadoopslave1:~$ sudo chown -R hadoop:hadoop /usr/local/phoenix/
+hadoop@hadoopslave1:~$ sudo chmod -R 775 /usr/local/phoenix/
+hadoop@hadoopslave1:/usr/local/phoenix$ cp *.jar /usr/local/hbase/lib/
 ```
 
 完成以上步骤,基本上Phoenix就安装成功了.
