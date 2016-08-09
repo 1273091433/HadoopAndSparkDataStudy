@@ -29,7 +29,8 @@
 * [第七章 Sqoop](Content/9/chapter9.md)
     * [1.Sqoop2的安装](Content/9/chapter0901.md)
     * [2.Sqoop1的安装](Content/9/chapter0902.md)
-    * [3.Sqooq综合案例](Content/9/chapter0903.md)
+    * [3.Sqooq1综合案例](Content/9/chapter0903.md)
+    * [4.Sqooq2综合案例](Content/9/chapter0904.md)
 * [第八章 HBASE](Content/11/chapter11.md)
     * [1.HBASE的伪分布安装与分布式安装](Content/11/chapter1101.md)
     * [2.HBASE常用的Shell命令](Content/11/chapter1102.md)
@@ -74,5 +75,6 @@
     * [1.运维常用工具](Content/chapter2201.md)
 * [第十八章 机器学习入门](Content/chapter23.md)
 * [第十九章 Centos下的Oracle安装](Content/chapter24.md)
+* [第二十章 基于JFinal的大数据框架快速开发](Content/20/chapter2001.md)
 * [附录 Hadoop运维技能要求](Content/HadoopTrainingSheet.md)
 

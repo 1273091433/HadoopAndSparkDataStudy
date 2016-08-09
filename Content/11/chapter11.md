@@ -23,7 +23,7 @@ HBase的服务器体系结构遵循简单的主从服务器架构。它由HRegio
 
 
 ## 三 Hbase数据模型 
-HBase,Cassandra的数据模型非常类似，他们的思想都是来源于Google的Bigtable，因此这三者的数据模型非常类似，唯一不同的就是Cassandra具有Super cloumn family的概念，而Hbase目前我没发现。好了，废话少说，我们来看看Hbase的数据模型到底是个啥东东。
+HBase,Cassandra的数据模型非常类似，他们的思想都是来源于Google的Bigtable，因此这三者的数据模型非常类似，唯一不同的就是Cassandra具有Super cloumn family的概念，而Hbase目前我没发现。
 
 在Hbase里面有以下两个主要的概念，Row key,Column Family，我们首先来看看Column family,Column family中文又名“列族”，Column family是在系统启动之前预先定义好的，每一个Column Family都可以根据“限定符”有多个column.下面我们来举个例子就会非常的清晰了。
 

@@ -1,6 +1,7 @@
-# 2.Sqoop1的安装
+# Sqoop1的安装
 
-####解压安装
+## 1 解压安装
+
 ```
 hadoop@Master:~$ sudo tar xvfz sqoop-1.4.6.bin__hadoop-2.0.4-alpha.tar.gz 
 
@@ -10,7 +11,7 @@ hadoop@Master:~$ sudo chown -R hadoop:hadoop /usr/local/sqoop1
 
 ```
 
-####修改环境变量
+## 2 修改环境变量
 
 ```
 hadoop@Master:~$ sudo nano /etc/profile
@@ -20,11 +21,15 @@ export PATH=$SQOOP_HOME/bin:$PATH
  
 hadoop@Master:~$ source /etc/profile
 
-
 ```
 
-####配置sqoop的环境变量
+##3 配置sqoop的环境变量
+
 ```
+下载mysql驱动包，mysql-connector-java-5.1.27.jar
+
+把jar包丢到到$SQOOP_HOME/lib下面
+
 hadoop@Master:/usr/local/sqoop1/conf$ cp sqoop-env-template.sh sqoop-env.sh
 
 # 指定各环境变量的实际配置
@@ -82,7 +87,7 @@ export HBASE_HOME=/usr/local/hbase
 
 ```
 
-####开始测试
+##4 开始测试
 ```
 需要拷贝mysql的驱动到lib下面
 hadoop@Master:~/mysql-connector-java-5.0.8$ sudo cp mysql-connector-java-5.0.8-bin.jar /usr/local/sqoop1/lib/
@@ -314,5 +319,21 @@ hadoop@Master:/usr/local/hadoop/share/hadoop/common$ ls
 hadoop-common-2.6.0.jar  hadoop-common-2.6.0-tests.jar  hadoop-nfs-2.6.0.jar  jdiff  lib  mysql-connector-java-5.0.8-bin.jar  sources  templates
 hadoop@Master:/usr/local/hadoop/share/hadoop/common$ sudo rm -rf mysql-connector-java-5.0.8-bin.jar 
 
+```
 
+## FAQ
+
+
+出现这二段警告,我们怎么解决,需要修改脚本
+
+**修改hadoop@hadoopmaster:/usr/local/sqoop/bin$ nano configure-sqoop**
+
+```
+hadoop@hadoopmaster:/usr/local/hive/lib$ sqoop list-databases --connect jdbc:mysql://hadoopslave2 --username hive --password hive
+Warning: /usr/local/sqoop/../hcatalog does not exist! HCatalog jobs will fail.
+Please set $HCAT_HOME to the root of your HCatalog installation.
+Warning: /usr/local/sqoop/../accumulo does not exist! Accumulo imports will fail.
+Please set $ACCUMULO_HOME to the root of your Accumulo installation.
+Warning: /usr/local/sqoop/../zookeeper does not exist! Accumulo imports will fail.
+Please set $ZOOKEEPER_HOME to the root of your Zookeeper installation.
 ```
