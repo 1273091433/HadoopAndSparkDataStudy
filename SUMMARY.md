@@ -21,7 +21,7 @@
     * [3.Hive的基本使用与导入导出](Content/8/chapter0802.md)
     * [4.Hive数据类型与文件格式](Content/8/chapter0806.md)
     * [5 Hive的存储架构与HQL语法](Content/8/chapter0803.md)
-    * [6 Hive的模式设计](Content/8/chapter0808.md)
+    * [6 Hive的模式设计与事务性](Content/8/chapter0808.md)
     * [7 Hive综合案例实战](Content/8/chapter0704.md)
     * [8 Hive开发](Content/8/chapter0809.md)
     * [9 Hive安全](Content/8/chapter0810.md)
