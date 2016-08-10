@@ -153,7 +153,7 @@ Maven的好处在于可以将项目过程规范化、自动化、高效化以及
 正确启动后会默认显示index.jsp页面的内容
 ![](../../images/20/idea/30.png)
 
-###四、简单搭建 JFinal框架（搭建 JFianl框架之前请先学习 JFinal官方手册）
+##四、简单搭建 JFinal框架（搭建 JFianl框架之前请先学习 JFinal官方手册）
 >[JFinal官网：http://www.jfinal.com/](http://www.jfinal.com/)
 
 >[详细语法说明请参考 JFinal官方手册：http://download.jfinal.com/upload/2.2/jfinal-2.2-manual.pdf](http://download.jfinal.com/upload/2.2/jfinal-2.2-manual.pdf)
