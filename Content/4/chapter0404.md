@@ -210,23 +210,60 @@ The key's randomart image is:
 ```
 
 **步骤二保证hadoopmaster登录自已是有效的**
+
 ```
 cd .ssh
 cat ./id_rsa.pub >> ./authorized_keys
 ```
 
 **步骤三将公钥拷贝到其他主机上**
+
 ```
 scp ~/.ssh/id_rsa.pub hadoop@hadoopslave1:/home/hadoop/
 scp ~/.ssh/id_rsa.pub hadoop@hadoopslave2:/home/hadoop/
 ```
 
 **步骤四 在其他二个节点上做的工作**
+
 ```
 mkdir ~/.ssh       # 如果不存在该文件夹需先创建，若已存在则忽略
 cat ~/id_rsa.pub >> ~/.ssh/authorized_keys
 rm ~/id_rsa.pub    # 用完就可以删掉了
 ```
+
+###6 资源限制配置
+此步骤要求在hadoopmaster hadoopslave1 hadoopslave2都要进行配置,以防止处理达到机器文件上限
+
+**1通过修改/etc/security/limits.conf追击参数进行配置**
+
+HBASE和其他的数据库软件一样会同时打开很多文件,Linux默认的ulimit值是1024,这对HBASE来说太小了,当使用诸如bulkload这种工具导入数据的时候会得到这样的异常信息:java.io.IOException:Too many open files.我们需要改变这个值.这是对操作系统的操作,而不是通过HBASE配置文件完成的,我们可以大致估算ulimit值需要配置为多大,例如:每个列族至少有一个存储文件(HFile),每个被加载的Region可能管理多达5或6个列族所对应的存储文件,用于存储文件个数乘于列族数再乘以每个RegionServer中的RegIon数量得到RegionServer主机管理的存储文件数量.假如每个Region有3个列族,每个列族平均有3个存储文件,每个RegionServer有100个region,将至少需要3*3*100=900个文件.这些存储文件会被客户端大量的操作,涉及大量的磁盘操作.
+
+```
+#*               soft    core            0
+#root            hard    core            100000
+#*               hard    rss             10000
+#@student        hard    nproc           20
+#@faculty        soft    nproc           20
+#@faculty        hard    nproc           50
+#ftp             hard    nproc           0
+#ftp             -       chroot          /ftp
+#@student        -       maxlogins       4
+hadoop  -       nofile  65535
+hadoop  -       nproc   32000
+```
+
+**2 通过修改 hdfs-site.xml解决同时处理文件上限的参数**
+Hadoop的Datanode有一个用于设置同时处理文件的上限个数的参数,这个参数叫xcievers,在启动之前,先确认有没有配置hadoop的这个参数,默认值是256,这对于一个任务很多的集群来说,实在太小了.
+
+
+```
+    <property>
+        <name>dfs.datanode.max.xcievers</name>
+        <value>12500</value>
+    </property>
+```
+
+
 ## 三 hadoopslave1 2主机配置
 
 ### 1 JDK安装
