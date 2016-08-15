@@ -76,5 +76,6 @@
 * [第十八章 机器学习入门](Content/chapter23.md)
 * [第十九章 Centos下的Oracle安装](Content/chapter24.md)
 * [第二十章 基于JFinal的大数据框架快速开发](Content/20/chapter2001.md)
+    * [1 基于Gradle的项目构建](Content/20/jFinalwithgradle.md)
 * [附录 Hadoop运维技能要求](Content/HadoopTrainingSheet.md)
 
