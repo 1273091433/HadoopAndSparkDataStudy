@@ -29,7 +29,7 @@
 
 ###3.MapReduce的系统工作原理
 
-![](../images/3/213054tajyxaaqyg1phs01.jpg)
+![](../../images/3/213054tajyxaaqyg1phs01.jpg)
 ###4.NameNode
 &#160; &#160; &#160; &#160;NameNode是Hadoop守护进程中最重点的一个,Hadoop在分布式计算与分布式存付中都采用了主/从(Master/slave)结构.分布式存储系统被称为Hadoop文件系统,或简单称为HDFS.NameNode位于HDFS的主端,它指导DataNode执行底层的IO任务.  
 &#160; &#160; &#160; &#160;运行NameNode消耗大量的内存与IO资源.因此,为了减轻机器的负载,驻留NameNode的服务器通常不会存储用户数据或者执行MapReduce程序的计算任务.这意味着NameNode服务器不会同时是DataNode或者TaskTracker.
@@ -87,7 +87,7 @@ NameNode负责管理存储在HDFS上所有文件的元数据，它会确认客�
 HDFS写
 图1 HDFS写过程示意图
 
-![](../images/hadoopwrite.jpg)
+![](../../images/hadoopwrite.jpg)
 
 第一步：客户端发消息给NameNode，说要将“zhou.log”文件写入。(如图1中的①)
 
@@ -111,7 +111,7 @@ HDFS写
 
 为了理解读的过程，可以认为一个文件是由存储在DataNode上的数据块组成的。客户端查看之前写入的内容的执行流程如图2所示，具体步骤为：HDFS读写图2 HDFS读过程示意图
 
-![](../images/hadoopread.jpg)
+![](../../images/hadoopread.jpg)
 
 
 第一步：客户端询问NameNode它应该从哪里读取文件。(如图2中的①)

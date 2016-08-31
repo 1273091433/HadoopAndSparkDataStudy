@@ -13,7 +13,7 @@ hadoop擅长日志分析，facebook就用Hive来进行日志分析，2009年时f
 
 ##Hadoop的版本演进
 当前Hadoop有两大版本：Hadoop 1.0和Hadoop 2.0，如下图所示。 
-![](../images/3/438_1.png)
+![](../../images/3/438_1.png)
 Hadoop版本演进图  
 
 &#160; &#160; &#160; &#160;Hadoop1.0被称为第一代Hadoop，由分布式文件系统HDFS和分布式计算框架MapReduce组成，其中，HDFS由一个NameNode和多个DataNode组成，MapReduce由一个JobTracker和多个TaskTracker组成，对应Hadoop版本为0.20.x、0.21.X，0.22.x和Hadoop 1.x。其中0.20.x是比较稳定的版本，最后演化为1. x，变成稳定版本。0.21.x和0.22.x则增加了NameNode HA等新特性。
