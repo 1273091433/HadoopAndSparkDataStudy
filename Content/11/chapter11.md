@@ -15,14 +15,18 @@ HBase建立在HDFS之上，提供高可靠性、高性能、列存储、可伸�
 * 面向列：面向列(族)的存储和权限控制，列(族)独立检索。
 * 稀疏：对于为空(null)的列，并不占用存储空间，因此，表可以设计的非常稀疏。
 
-## HBase体系架构               
+## 三 HBase体系架构               
 
 HBase的服务器体系结构遵循简单的主从服务器架构。它由HRegion Server和HMaster组成，HMaster负责管理所有的HRegion Server，HBase中所有的服务器都通过ZooKeeper来协调。HBase的体系结构如下图所示。
 
 ![](../../images/11/chapter110507.jpeg)
 
 
-## 三 Hbase数据模型 
+## 四 Hbase的二类数据模型 
+
+HBASE的二类数据模型是指从逻辑模型与物理模型来了解Hbase的数据模型,表是HBase表达数据的逻辑组织方式,而基于列的存储则是数据在底层的组织方式.
+
+### 1 逻辑模型
 HBase,Cassandra的数据模型非常类似，他们的思想都是来源于Google的Bigtable，因此这三者的数据模型非常类似，唯一不同的就是Cassandra具有Super cloumn family的概念，而Hbase目前我没发现。
 
 在Hbase里面有以下两个主要的概念，Row key,Column Family，我们首先来看看Column family,Column family中文又名“列族”，Column family是在系统启动之前预先定义好的，每一个Column Family都可以根据“限定符”有多个column.下面我们来举个例子就会非常的清晰了。
@@ -35,34 +39,20 @@ HBase,Cassandra的数据模型非常类似，他们的思想都是来源于Googl
 
 上图是传统的RDBMS设计的Feed表，我们可以看出feed有多少列是固定的，不能增加，并且为null的列浪费了空间。但是我们再看看下图，下图为Hbase，Cassandra,Bigtable的数据模型图，从下图可以看出，Feed表的列可以动态的增加，并且为空的列是不存储的，这就大大节约了空间，关键是Feed这东西随着系统的运行，各种各样的Feed会出现，我们事先没办法预测有多少种Feed，那么我们也就没有办法确定Feed表有多少列，因此Hbase,Cassandra,Bigtable的基于列存储的数据模型就非常适合此场景。说到这里，采用Hbase的这种方式，还有一个非常重要的好处就是Feed会自动切分，当Feed表中的数据超过某一个阀值以后，Hbase会自动为我们切分数据，这样的话，查询就具有了伸缩性，而再加上Hbase的弱事务性的特性，对Hbase的写入操作也将变得非常快。
 
+![](../../images/11/chapter110508.png)
+
 上面说了Column family，那么我之前说的Row key是啥东东，其实你可以理解row key为RDBMS中的某一个行的主键，但是因为Hbase不支持条件查询以及Order by等查询，因此Row key的设计就要根据你系统的查询需求来设计了额。我还拿刚才那个Feed的列子来说，我们一般是查询某个人最新的一些Feed，因此我们Feed的Row key可以有以下三个部分构成<userId><timestamp><feedId>，这样以来当我们要查询某个人的最进的Feed就可以指定Start Rowkey为<userId><0><0>，End Rowkey为<userId><Long.MAX_VALUE><Long.MAX_VALUE>来查询了，同时因为Hbase中的记录是按照rowkey来排序的，这样就使得查询变得非常快。
+![](../../images/11/chapter110509.png)
+
+![](../../images/11/chapter110510.jpg)
+
+### 2 物理模型
+虽然在逻辑
 
 
-##2、HBase and Hive？
+##五 HBase and Hive？
 
-###2.1、HBase和Hive联系与区别
-
-星环的Inceptor-SQL就是将开源的HiveQL进行了二次开发，主要增加了JDBC、ODBC和对SQL-2003解释器的强大功能，那么和HBase有什么区别和联系呢？
-
-这里我大致的将各个关系进行映射，大家就可以明白了
-
-```
-Inceptor-SQL ————> HiveQL
-Hyperbase    ————> HBase
-```
-
-
-再看下面这张图
-
-![](../../images/16/14.png)
-
-
-
-
-HiveQL操作底层实际上都是一个个MapReduce或者Spark任务，也就是说，Hive可以访问HDFS上的数据做数据分析，也可以对HBase做数据分析，因为真正的数据要么存放在HDFS分布式文件系统上，要么存放在HBase数据库上。
-
-
-###2.2、HBase实例及代码解释
+### 1 HBase实例及代码解释
 
 要想使用HBase存取数据必须要有两个步骤：
 

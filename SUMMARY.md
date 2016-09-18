@@ -32,6 +32,7 @@
     * [2.Sqoop1的安装](Content/9/chapter0902.md)
     * [3.Sqooq1综合案例](Content/9/chapter0903.md)
     * [4.Sqooq2综合案例](Content/9/chapter0904.md)
+    * [5.DataX性能对比](Content/9/datax/datax.md)
 * [第八章 HBASE](Content/11/chapter11.md)
     * [1.HBASE的伪分布安装与分布式安装](Content/11/chapter1101.md)
     * [2.HBASE常用的Shell命令](Content/11/chapter1102.md)
