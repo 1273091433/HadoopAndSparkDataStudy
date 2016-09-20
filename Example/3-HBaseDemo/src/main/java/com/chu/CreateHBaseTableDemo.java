@@ -44,10 +44,10 @@ public class CreateHBaseTableDemo
     {
         //createTable("HBaseDemoTable1");
         //insertData("HBaseDemoTable1");
-         QueryAll("HBaseDemoTable1");
-        // QueryByCondition1("wujintao");
-        // QueryByCondition2("wujintao");
-        //QueryByCondition3("wujintao");
+        //QueryAll("HBaseDemoTable1");
+        //QueryByCondition1("HBaseDemoTable1");
+        //QueryByCondition2("HBaseDemoTable1");
+        QueryByCondition3("HBaseDemoTable1");
         //deleteRow("wujintao","abcdef");
         //deleteByCondition("wujintao", "abcdef");
     }
@@ -208,10 +208,10 @@ public class CreateHBaseTableDemo
      */
     public static void QueryByCondition1(String tableName) {
 
-        HTablePool pool = new HTablePool(configuration, 1000);
-        HTable table = (HTable) pool.getTable(tableName);
+
         try {
-            Get scan = new Get("abcdef".getBytes());// 根据rowkey查询
+            HTable table = new HTable(configuration, tableName);
+            Get scan = new Get("45678hyhyjju".getBytes());// 根据rowkey查询
             Result r = table.get(scan);
             System.out.println("获得到rowkey:" + new String(r.getRow()));
             for (KeyValue keyValue : r.raw()) {
@@ -231,11 +231,10 @@ public class CreateHBaseTableDemo
     public static void QueryByCondition2(String tableName) {
 
         try {
-            HTablePool pool = new HTablePool(configuration, 1000);
-            HTable table = (HTable) pool.getTable(tableName);
+            HTable table = new HTable(configuration, tableName);
             Filter filter = new SingleColumnValueFilter(Bytes
                     .toBytes("column1"), null, CompareOp.EQUAL, Bytes
-                    .toBytes("aaa")); // 当列column1的值为aaa时进行查询
+                    .toBytes("123456")); // 当列column1的值为aaa时进行查询
             Scan s = new Scan();
             s.setFilter(filter);
             ResultScanner rs = table.getScanner(s);
@@ -260,24 +259,23 @@ public class CreateHBaseTableDemo
     public static void QueryByCondition3(String tableName) {
 
         try {
-            HTablePool pool = new HTablePool(configuration, 1000);
-            HTable table = (HTable) pool.getTable(tableName);
+            HTable table = new HTable(configuration, tableName);
 
             List<Filter> filters = new ArrayList<Filter>();
 
             Filter filter1 = new SingleColumnValueFilter(Bytes
                     .toBytes("column1"), null, CompareOp.EQUAL, Bytes
-                    .toBytes("aaa"));
+                    .toBytes("123456"));
             filters.add(filter1);
 
             Filter filter2 = new SingleColumnValueFilter(Bytes
                     .toBytes("column2"), null, CompareOp.EQUAL, Bytes
-                    .toBytes("bbb"));
+                    .toBytes("123456"));
             filters.add(filter2);
 
             Filter filter3 = new SingleColumnValueFilter(Bytes
                     .toBytes("column3"), null, CompareOp.EQUAL, Bytes
-                    .toBytes("ccc"));
+                    .toBytes("c2g111"));
             filters.add(filter3);
 
             FilterList filterList1 = new FilterList(filters);
