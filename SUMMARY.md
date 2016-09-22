@@ -43,7 +43,7 @@
     * [7.Hive与Hbase的区别](Content/11/chapter1107.md)
 * [第九章 HBASE实战](Content/12/chapter12.md)
     * [1.HBASE基于Java开发](Content/12/chapter1201.md)
-    * [2.Phoenix的安装与使用](Content/12/chapter1202.md)
+    * [2.整合SQL引擎层](Content/12/chapter1202.md)
     * [3.基本数据迁移](Content/12/chapter1203.md)
     * [4.基于Bulk load的数据迁移](Content/12/chapter1204.md)
     * [5.使用管理工具](Content/12/chapter1205.md)
