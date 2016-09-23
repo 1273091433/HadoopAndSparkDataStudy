@@ -14,7 +14,7 @@ http://192.168.1.80:16010/master-status
 ```
 HBASE主WEB界面如下
 
-![](images/12/Master- Master.gif)
+![](../../images/12/Master- Master.gif)
 
 正如你所看到的那样,在"Attributes区中显示的信息有":HBASE和Hadoop的版本/HBASE在HDFS上的根目录/集群的平均负载以及Zookeeper仲裁地址.HBASE根目录和Zookeeper服务器地址是HBASE配置文件hbase-site.xml中设置的值.平均负载是每个区域服务器所负责区域的平均值.一个区域服务器的负载显示在Region Server区中.
 
@@ -242,6 +242,7 @@ Truncating 't1' table (it may take a while):
 ##HFile工具 以文本方式查看HFile的内容
 
 ##HBASE hbck检查HBASE集群的一致性
+
 ```
 查看hbasemeta情况
 hbase hbck
@@ -249,8 +250,7 @@ hbase hbck
 hbase hbck -fixMeta
 2.重新将hbase meta表分给regionserver（根据meta表，将meta表上的region分给regionservere）
 hbase hbck -fixAssignments
-```
-```
+
 
 新版本的 hbck 
 1）缺失hbase.version文件 
