@@ -25,6 +25,7 @@ chu888chu888@hadoopmaster:~$ tar xvfz elasticsearch-5.2.1.tar.gz
 
 
 + 2.启动ElasticSearch
+
 ```
 chu888chu888@hadoopmaster:~/elasticsearch-5.2.1$ ls
 bin  config  lib  LICENSE.txt  modules  NOTICE.txt  plugins  README.textile
@@ -38,14 +39,17 @@ elasticsearch-plugin  elasticsearch-service-x86.exe
 chu888chu888@hadoopmaster:~/elasticsearch-5.2.1/bin$ ./elasticsearch
 
 ```
+
 日志中启动了两个端口分别是：9300和9200,9300用于跟其他的节点的传输，9200用于接受HTTP请求，ctrl+c可以结束进程
 
 如果想要后台运行，可以用以下方法
+
 ```
 ./bin/elasticsearch -d
 ```
 
 + 3. 测试ElasticSearch
+
 ```
 chu888chu888@hadoopmaster:~$ curl 127.0.0.1:9200
 {
@@ -65,10 +69,13 @@ chu888chu888@hadoopmaster:~$
 ```
 
 + 4. 让外网可以访问到我们
-     因为elasticsearch安装在虚拟机里面，我希望我的主机也可以访问，需要config/elasticsearch.yml进行配置：
+
+因为elasticsearch安装在虚拟机里面，我希望我的主机也可以访问，需要config/elasticsearch.yml进行配置：
+
 ```
 network.host: 192.168.1.159
 ```
+
 重新启动后会出现错误
 
 ```
@@ -77,6 +84,7 @@ chu888chu888@hadoopmaster:~/elasticsearch-5.2.1/bin$ ./elasticsearch
 
 解决办法：
 切换到root用户，修改配置limits.conf
+
 ```
 chu888chu888@hadoopmaster:/etc/security$ sudo nano limits.conf
 
@@ -85,7 +93,9 @@ chu888chu888@hadoopmaster:/etc/security$ sudo nano limits.conf
 * soft nproc 2048
 * hard nproc 4096
 ```
+
 修改配置sysctl.conf
+
 ```
 chu888chu888@hadoopmaster:/etc/security$ sudo nano /etc/sysctl.conf 
 
@@ -93,6 +103,7 @@ vm.max_map_count=655360
 ```
 
 重新再启动后，成功
+
 ```
 chu888chu888@hadoopmaster:~/elasticsearch-5.2.1/bin$ ./elasticsearch
 
@@ -122,6 +133,7 @@ at org.elasticsearch.bootstrap.Seccomp.init(Seccomp.java:630) ~[elasticsearch-5.
 
 
 + 2.问题二：ERROR: bootstrap checks failed
+
 ```
 
 max file descriptors [4096] for elasticsearch process likely too low, increase to at least [65536]
@@ -144,6 +156,7 @@ vi /etc/security/limits.conf
 
 
 + 3.问题三：max number of threads [1024] for user [lish] likely too low, increase to at least [2048]
+
 ```
 
 解决：切换到root用户，进入limits.d目录下修改配置文件。
@@ -157,6 +170,7 @@ vi /etc/security/limits.d/90-nproc.conf
 
 
 + 4.问题四：max virtual memory areas vm.max_map_count [65530] likely too low, increase to at least [262144]
+
 ```
 
 解决：切换到root用户修改配置sysctl.conf
@@ -185,15 +199,18 @@ Logstash是一个完全开源的工具，可以对你的日志进行收集、过
 ###安装
 
 + 1.解压进入目录
+
 ```
 chu888chu888@hadoopmaster:~$ unzip logstash-5.2.2.zip
 ```
 
 + 2.添加配置文件
+
 ```
 chu888chu888@hadoopmaster:~/logstash-5.2.2/config$ nano first-pipline.conf
 
 ```
+
 + 3.添加如下内容
 
 ```
@@ -230,14 +247,17 @@ New Elasticsearch output {:class=>”LogStash::Outputs::ElasticSearch”, :hosts
 Kibana可以为Logstash和ElasticSearch提供的日志分析友好的Web界面，可以帮助您汇总、分析和搜索重要数据日志。
 
 1.解压进入目录
+
 ```
 chu888chu888@hadoopmaster:~$ tar xvfz kibana-5.2.2-linux-x86_64.tar.gz
 ```
 2.修改配置文件
+
 ```
 nano config/kibana.yml
 ```
 3.添加如下配置项
+
 ```
 server.port: 5601
 server.host: "192.168.1.159"
@@ -245,15 +265,18 @@ elasticsearch.url: "http://192.168.1.159:9200"
 kibana.index: ".kibana"
 ```
 4.启动服务
+
 ```
 ./bin/kibana
 ```
 5.启动成功日志如下
+
 ```
 chu888chu888@hadoopmaster:~/kibana-5.2.2-linux-x86_64/bin$ ./kibana
  
 ```
 6.浏览器访问
+
 默认第一次需要Configure an index pattern，默认的Index name是logstash-*，直接create就行了。
 
 ```
