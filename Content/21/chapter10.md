@@ -1,6 +1,6 @@
 # 概述
 
-开源实时日志分析ELK平台(ElasticSearch, Logstash, Kibana组成)，能很方便的帮我们收集日志，进行集中化的管理，并且能很方便的进行日志的统计和检索，下面基于ELK的最新版本1.5.2进行一次整合测试。
+开源实时日志分析ELK平台(ElasticSearch, Logstash, Kibana组成)，能很方便的帮我们收集日志，进行集中化的管理，并且能很方便的进行日志的统计和检索，下面基于ELK的最新版本5.2进行一次整合测试。
 
 ElasticSearch是一个高可扩展的开源的全文搜索分析引擎。它允许你快速的存储、搜索和分析大量数据。ElasticSearch通常作为后端程序，为需要复杂查询的应用提供服务。
 
@@ -8,7 +8,6 @@ Elasticsearch是一个基于Lucene的开源分布式搜索引擎，具有分布�
 
 ##环境要求:
 + JDK1.8
-+ ElasticSearch 1.5.2
 
 ##下载地址
 
@@ -21,15 +20,23 @@ Elasticsearch是一个基于Lucene的开源分布式搜索引擎，具有分布�
 + 1.解压ElasticSearch并进入目录：
 
 ```
-chu888chu888@hadoopmaster:~$ tar xvfz elasticsearch-1.5.2.tar.gz
+chu888chu888@hadoopmaster:~$ tar xvfz elasticsearch-5.2.1.tar.gz
 ```
 
 
 + 2.启动ElasticSearch
 
 ```
-chu888chu888@hadoopmaster:~/elasticsearch-1.5.2$ cd bin
-chu888chu888@hadoopmaster:~/elasticsearch-1.5.2/bin$ ./elasticsearch
+chu888chu888@hadoopmaster:~/elasticsearch-5.2.1$ ls
+bin  config  lib  LICENSE.txt  modules  NOTICE.txt  plugins  README.textile
+chu888chu888@hadoopmaster:~/elasticsearch-5.2.1$ cd bin
+chu888chu888@hadoopmaster:~/elasticsearch-5.2.1/bin$ ls
+elasticsearch         elasticsearch-plugin.bat       elasticsearch-systemd-pre-exec
+elasticsearch.bat     elasticsearch-service.bat      elasticsearch-translog
+elasticsearch.in.bat  elasticsearch-service-mgr.exe  elasticsearch-translog.bat
+elasticsearch.in.sh   elasticsearch-service-x64.exe
+elasticsearch-plugin  elasticsearch-service-x86.exe
+chu888chu888@hadoopmaster:~/elasticsearch-5.2.1/bin$ ./elasticsearch
 
 ```
 
@@ -61,50 +68,7 @@ chu888chu888@hadoopmaster:~$ curl 127.0.0.1:9200
 chu888chu888@hadoopmaster:~$ 
 ```
 
-也可以使用curl尝试远程关闭
-
-```
-chu888chu888@hadoopmaster:~$ curl -XPOST 'http://localhost:9200/_shutdown'
-```
-
-+ 4. Elasticsearch配置文件
-
-ElasticSearch的配置文件一般放置在安装目录下的config目录中。config目录中有两个文件,分别是elasticsearch.yml 和logging.yml。前者用来配置ElasticSearch不同模块的属性，比如网络地址，路径等，后者则用来配置自身的日志记录选项。
-
-配置文件是YAML格式的，下面简要地介绍一些配置参数。
-
-
-
-
-**网络地址，指定网络相关模块的绑定和发布地址**
-
-```
-network:
-	host:127.0.0.1
-```
-
-**路径指定数据和日志文件的路径**
-
-```
-path:
-	logs:/var/log/elasticsearch
-	data:/var/data/elasticsearch
-```
-
-**集群名，指定生产集群的名字，集群将根据这个名字来自动发现和加入节点**
-
-```
-cluster:
-	name:<NAME OF YOUR CLUSTER>
-```
-
-**节点名，指定每个节点的默认名称**
-
-```
-node:
-	name:<NAME OF YOUR NODE>
-```
-
++ 4. 让外网可以访问到我们
 
 因为elasticsearch安装在虚拟机里面，我希望我的主机也可以访问，需要config/elasticsearch.yml进行配置：
 
@@ -115,7 +79,7 @@ network.host: 192.168.1.159
 重新启动后会出现错误
 
 ```
-/bin$ ./elasticsearch
+chu888chu888@hadoopmaster:~/elasticsearch-5.2.1/bin$ ./elasticsearch
 ```
 
 解决办法：
@@ -141,39 +105,11 @@ vm.max_map_count=655360
 重新再启动后，成功
 
 ```
-chu888chu888@hadoopmaster:~/elasticsearch-1.5.2/bin$ ./elasticsearch
-[2017-03-10 17:21:16,446][INFO ][node                     ] [Celestial Madonna] version[1.5.2], pid[1371], build[62ff986/2015-04-27T09:21:06Z]
-[2017-03-10 17:21:16,448][INFO ][node                     ] [Celestial Madonna] initializing ...
-[2017-03-10 17:21:16,451][INFO ][plugins                  ] [Celestial Madonna] loaded [], sites []
-[2017-03-10 17:21:18,428][INFO ][node                     ] [Celestial Madonna] initialized
-[2017-03-10 17:21:18,431][INFO ][node                     ] [Celestial Madonna] starting ...
-[2017-03-10 17:21:18,496][INFO ][transport                ] [Celestial Madonna] bound_address {inet[/192.168.1.159:9300]}, publish_address {inet[/192.168.1.159:9300]}
-[2017-03-10 17:21:18,562][INFO ][discovery                ] [Celestial Madonna] elasticsearch/t89zGY2WTAKlVLzDOo1xSQ
-[2017-03-10 17:21:22,347][INFO ][cluster.service          ] [Celestial Madonna] new_master [Celestial Madonna][t89zGY2WTAKlVLzDOo1xSQ][hadoopmaster][inet[/192.168.1.159:9300]], reason: zen-disco-join (elected_as_master)
-[2017-03-10 17:21:22,378][INFO ][gateway                  ] [Celestial Madonna] recovered [0] indices into cluster_state
-[2017-03-10 17:21:22,383][INFO ][http                     ] [Celestial Madonna] bound_address {inet[/192.168.1.159:9200]}, publish_address {inet[/192.168.1.159:9200]}
-[2017-03-10 17:21:22,383][INFO ][node                     ] [Celestial Madonna] started
-^C[2017-03-10 17:39:56,381][INFO ][node                     ] [Celestial Madonna] stopping ...
-[2017-03-10 17:39:56,396][INFO ][node                     ] [Celestial Madonna] stopped
-[2017-03-10 17:39:56,396][INFO ][node                     ] [Celestial Madonna] closing ...
-[2017-03-10 17:39:56,402][INFO ][node                     ] [Celestial Madonna] closed
-
+chu888chu888@hadoopmaster:~/elasticsearch-5.2.1/bin$ ./elasticsearch
 
 ```
 
 ![](../../images/21/2017030901.png)
-
-
-##ElasticSearch插件
-ElasticSearch有各种插件，可以简化诸如管理索引、集群等任务。其中一些常用的插件有kopf Marvel Sense Shield等等。
-
-Kopf是用javascript Angularjs Jquery Bootstrap写的一个简单的ElasticSearch Web管理工具,简化了管理ElasticSearch集群的常见任务。这个插件没有覆盖所有的API,但提供了一个REST客户端，允许你探索ElasticSearch api的全部功能。
-
-```
-chu888chu888@hadoopmaster:~/elasticsearch-1.5.2/bin$ ./plugin -install lmenezes/elasticsearch-kopf/1.0
-
-```
-![](../../images/21/2017030910.png)
 
 ##ElasticSearch安装错误FAQ
 
