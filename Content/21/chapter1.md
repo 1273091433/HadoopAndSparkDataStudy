@@ -6,6 +6,14 @@ ElasticSearch是一个高可扩展的开源的全文搜索分析引擎。它允�
 
 Elasticsearch是一个基于Lucene的开源分布式搜索引擎，具有分布式多用户能力。Elasticsearch是用java开发，提供Restful接口，能够达到实时搜索、高性能计算；同时Elasticsearch的横向扩展能力非常强，不需要重启服务，基本上达到了零配置。
 
+写到一半，发现一个非常好的Logstash的文章集合，大家直接参考吧。我之后会实验为主，至于理论详解，我感觉以下三篇文章，写的比我好多好多了。
+
+[Logstash 最佳实践](http://udn.yyuap.com/doc/logstash-best-practice-cn/index.html)
+
+[Elasticsearch 权威指南](https://fuxiaopang.gitbooks.io/learnelasticsearch/)
+
+[ELKstack 中文指南](https://www.gitbook.com/book/chenryn/elk-stack-guide-cn/details)
+
 ##环境要求:
 + JDK1.8
 + ElasticSearch 5.2.2
@@ -266,6 +274,15 @@ Logstash是一个完全开源的工具，可以对你的日志进行收集、过
 
 ![](../../images/21/175856_Lzw9_159239.png)
 
+写到一半，发现一个非常好的Logstash的文章集合，大家直接参考吧。
+
+[Logstash 最佳实践](http://udn.yyuap.com/doc/logstash-best-practice-cn/index.html)
+
+[Elasticsearch 权威指南](https://fuxiaopang.gitbooks.io/learnelasticsearch/)
+
+[ELKstack 中文指南](https://www.gitbook.com/book/chenryn/elk-stack-guide-cn/details)
+
+
 ###安装
 
 + 1.解压进入目录
@@ -415,7 +432,6 @@ chu888chu888@hadoopmaster:~/kibana-5.2.2-linux-x86_64/bin$ ./kibana
 ```
 http://192.168.1.159:5601/app/kibana#/management/kibana/index/?_g=()
 ```
-Unable to fetch mapping .Do you have indices matching the pattern?
-我在这里卡住了。。我再研究一下。
+
 
 ![](../../images/21/kibna.png)
